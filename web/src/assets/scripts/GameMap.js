@@ -8,9 +8,10 @@ export class GameMap extends AcGameObject{
         this.ctx = ctx;
         this.parent = parent;
         this.L = 0; //一个单位（格子）的长度
-
+        
+        //行数和列数分别为偶数和奇数，防止两蛇同时进入一个格子
         this.rows = 13; //行数
-        this.cols = 13; //列数
+        this.cols = 14; //列数
 
         this.inner_walls_count = 20; //内部墙的数量
 
@@ -51,10 +52,10 @@ export class GameMap extends AcGameObject{
             for(let j = 0; j < 1000;j ++){
                 let r = parseInt(Math.random() * this.rows);
                 let c = parseInt(Math.random() * this.cols);
-                if(g[r][c] || g[c][r]) continue;
+                if(g[r][c] || g[this.rows - 1 -r][this.cols - 1 - c]) continue;
                 if(r == this.rows - 2 && c == 1 || r == 1 && c == this.cols - 2) continue;
 
-                g[r][c] = g[c][r] = true;
+                g[r][c] = g[this.rows - 1 - r][this.cols - 1 - c] = true;
                 break;
             }
         }
@@ -62,8 +63,8 @@ export class GameMap extends AcGameObject{
         const copy_g = JSON.parse(JSON.stringify(g));
         if(!this.check_connectivity(copy_g, this.rows - 2, 1, 1, this.cols - 2)) return false;
 
-        for(let r = 0; r < this.cols; r ++){
-            for(let c = 0; c < this.rows; c ++){
+        for(let r = 0; r < this.rows; r ++){
+            for(let c = 0; c < this.cols; c ++){
                 if(g[r][c]){
                     this.walls.push(new Wall(r, c, this));
                 }
