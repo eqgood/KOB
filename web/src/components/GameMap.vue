@@ -1,6 +1,6 @@
 <template>
     <div ref="parent" class="gamemap">
-        <canvas ref="canvas"></canvas>
+        <canvas ref="canvas" tabindex="0"></canvas> <!-- tabindex="0" 让canvas可以获取焦点，从而监听键盘事件 -->
     </div>
 </template>
 
