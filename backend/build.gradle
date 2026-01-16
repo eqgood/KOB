@@ -1,6 +1,6 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '4.0.1'
+    id 'org.springframework.boot' version '2.7.18'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
@@ -10,7 +10,7 @@ description = 'backend'
 
 java {
     toolchain {
-        languageVersion = JavaLanguageVersion.of(25)
+        languageVersion = JavaLanguageVersion.of(17)
     }
 }
 
@@ -19,10 +19,23 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-    testImplementation 'org.springframework.boot:spring-boot-starter-thymeleaf-test'
-    testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+    implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-thymeleaf")
+
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation("com.mysql:mysql-connector-j:9.5.0")
+    implementation("com.baomidou:mybatis-plus-boot-starter:3.5.16")
+    implementation("com.baomidou:mybatis-plus-generator:3.5.16")
+
+    implementation("org.springframework.boot:spring-boot-starter-security")
+//    implementation("io.jsonwebtoken:jjwt-api:0.13.0")
+//    runtimeOnly("io.jsonwebtoken:jjwt-impl:0.13.0")
+//    runtimeOnly("io.jsonwebtoken:jjwt-jackson:0.13.0")
+
+    testImplementation("org.springframework.boot:spring-boot-starter-test")
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
