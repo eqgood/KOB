@@ -7,6 +7,7 @@ export default {
     photo: "",
     token: "",
     is_login: false,
+    pulling_info: true, //是否正在拉取用户信息
   },
   getters: {
   },
@@ -26,6 +27,9 @@ export default {
         state.photo = "",
         state.token = "",
         state.is_login = false
+    },
+    updatePullingInfo(state, pulling_info){
+        state.pulling_info = pulling_info
     }
   },
   actions: {
@@ -35,10 +39,11 @@ export default {
             type: "post",
             data: {
                 username: data.username,
-                password: data.password
+                password: data.password 
             },
             success(resp){
                 if(resp.message === "success"){
+                    localStorage.setItem("jwt_token", resp.token); //将token存储到本地存储中
                     context.commit("updateToken", resp.token);
                     data.success(resp);
                 }else{
@@ -77,8 +82,11 @@ export default {
     },
 
     logout(context){
+        localStorage.removeItem("jwt_token");
         context.commit("logout");
-    }
+    },
+
+
   },
   modules: {
   }

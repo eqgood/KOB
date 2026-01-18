@@ -67,7 +67,7 @@ public class RegisterServiceImpl implements RegisterService {
         queryWrapper.eq("username",username);
         List<User> users = userMapper.selectList(queryWrapper);
         if(!users.isEmpty()){
-            map.put("message", "用户名重复，请重新输入");
+            map.put("message", "用户名已存在");
             return map;
         }
 
