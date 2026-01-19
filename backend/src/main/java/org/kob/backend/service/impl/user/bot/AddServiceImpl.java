@@ -54,7 +54,6 @@ public class AddServiceImpl implements AddService {
             map.put("message","代码内容长度不能超过10000");
             return map;
         }
-
         Date now = new Date();
         Bot bot = new Bot(null, user.getId(), title, description, content, 1500, now, now);
 
