@@ -3,7 +3,6 @@ package org.kob.matchingsystem;
 import org.kob.matchingsystem.Service.impl.MatchingServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication

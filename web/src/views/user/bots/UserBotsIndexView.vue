@@ -43,7 +43,7 @@
                                     </div>
                                 </div>
                                 <div class="modal-footer">
-                                    <div class = "error_message">{{botadd.error_message}}</div>
+                                    <div class = "error-message">{{botadd.error_message}}</div>
                                     <button @click="add_bot" type="button" class="btn btn-primary">创建</button>
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                                 </div>
@@ -63,13 +63,13 @@
                             <tbody>
                                 <tr v-for="bot in bots" :key="bot.id">
                                     <td>{{ bot.title }}</td>
-                                    <td>{{ bot.createTime }}</td>
+                                    <td>{{ bot.createtime }}</td>
                                     <td>
-                                        <button  type="button" class="btn btn-secondary" style="margin-right: 10px;" data-bs-toggle="modal" :data-bs-target="'#update-bot-modal' + bot.id">
+                                        <button  type="button" class="btn btn-secondary" style="margin-right: 10px;" data-bs-toggle="modal" :data-bs-target="'#update-bot-modal-' + bot.id">
                                             修改
                                         </button>
 
-                                        <div class="modal fade" :id="'update-bot-modal' + bot.id" tabindex="-1">
+                                        <div class="modal fade" :id="'update-bot-modal-' + bot.id" tabindex="-1">
                                             <div class="modal-dialog modal-xl">
                                                 <div class="modal-content">
                                                 <div class="modal-header">
@@ -87,12 +87,12 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="add-bot-code" class="form-label">代码</label>
-                                                        <VAceEditor v-model:value="botadd.content" @init="editorInit" lang="c_cpp" 
+                                                        <VAceEditor v-model:value="bot.content" @init="editorInit" lang="c_cpp" 
                                                                     theme="textmate" style="height: 300px" :options="{
                                                                                                                 enableBasicAutocompletion: true, //启用基本自动完成
                                                                                                                 enableSnippets: true, // 启用代码段
                                                                                                                 enableLiveAutocompletion: true, // 启用实时自动完成
-                                                                                                                fontSize: 30, //设置字号
+                                                                                                                fontSize: 15, //设置字号
                                                                                                                 tabSize: 4, // 标签大小
                                                                                                                 showPrintMargin: false, //去除编辑器里的竖线
                                                                                                                 highlightActiveLine: true,
@@ -102,7 +102,7 @@
                                                 </div>
                                                 <div class="modal-footer">
                                                     <div class = "error_message">{{bot.error_message}}</div>
-                                                    <button @click="add_bot" type="button" class="btn btn-primary">保存修改</button>
+                                                    <button @click="update_bot(bot)" type="button" class="btn btn-primary">保存修改</button>
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                                                 </div>
                                                 </div>
@@ -188,7 +188,7 @@ export default {
                 data:{
                     title: botadd.title,
                     description: botadd.description,
-                    content:botadd.code
+                    content:botadd.content
                 },
                 success(resp){
                     if(resp.message === "success"){
@@ -223,7 +223,7 @@ export default {
         };
 
         const update_bot =(bot) =>{
-            bot.error_message = '';
+            botadd.error_message = '';
             $.ajax({
                 url: "http://127.0.0.1:3000/user/bot/update/",
                 type: "POST",
@@ -238,10 +238,10 @@ export default {
                 },
                 success(resp){
                     if(resp.message === "success"){
-                        Modal.getInstance("#update-bot-btn" + bot.id).hide();
+                        Modal.getInstance('#update-bot-modal-' + bot.id).hide();
                         refresh_bots();
                     }else{
-                        bot.error_message = resp.message;
+                        botadd.error_message = resp.message;
                     }
                 }
             })

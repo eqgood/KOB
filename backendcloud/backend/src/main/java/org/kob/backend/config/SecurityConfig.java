@@ -53,7 +53,8 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/user/account/register/")
                         ).permitAll() // 放行api
                         .requestMatchers(
-                                new AntPathRequestMatcher("/pk/start/game/")
+                                new AntPathRequestMatcher("/pk/start/game/"),
+                                new AntPathRequestMatcher("/pk/receive/bot/move/")
                         ).access((authentication, context) ->
                                 new AuthorizationDecision(hasIpAddress.matches(context.getRequest())))
                         .requestMatchers(new AntPathRequestMatcher("/**", HttpMethod.OPTIONS.name())).permitAll()
