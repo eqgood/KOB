@@ -4,7 +4,7 @@ export default {
     socket : null,
     opponent_username: "",
     opponent_photo: "",
-    gamemap:null,
+    gamemap: null,
     a_id: 0,
     a_sx: 0,
     a_sy: 0,

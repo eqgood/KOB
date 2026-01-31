@@ -18,8 +18,8 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
 
     implementation("com.mysql:mysql-connector-j:9.5.0")
-    implementation("com.baomidou:mybatis-plus-boot-starter:3.5.16")
-    implementation("com.baomidou:mybatis-plus-generator:3.5.16")
+    implementation("com.baomidou:mybatis-plus-boot-starter:3.5.3.1")
+    implementation("com.baomidou:mybatis-plus-generator:3.5.3.1")
     implementation("org.jetbrains:annotations:24.0.1")
 
     implementation("org.springframework.boot:spring-boot-starter-security")

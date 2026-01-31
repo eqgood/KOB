@@ -87,7 +87,7 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="add-bot-code" class="form-label">代码</label>
-                                                        <VAceEditor v-model:value="bot.content" @init="editorInit" lang="c_cpp" 
+                                                        <VAceEditor v-model:value="botadd.content" class = "form-control" @init="editorInit" lang="c_cpp"  
                                                                     theme="textmate" style="height: 300px" :options="{
                                                                                                                 enableBasicAutocompletion: true, //启用基本自动完成
                                                                                                                 enableSnippets: true, // 启用代码段
@@ -101,7 +101,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="modal-footer">
-                                                    <div class = "error_message">{{bot.error_message}}</div>
+                                                    <div class = "error-message">{{bot.error_message}}</div>
                                                     <button @click="update_bot(bot)" type="button" class="btn btn-primary">保存修改</button>
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
                                                 </div>
@@ -194,7 +194,7 @@ export default {
                     if(resp.message === "success"){
                         botadd.title = '';
                         botadd.description = '';
-                        botadd.code = '';
+                        botadd.content = '';
                         Modal.getInstance("#add-bot-btn").hide();
                         refresh_bots();
                     }else{
@@ -258,7 +258,7 @@ export default {
 </script>
 
 <style scoped>
-.error_message {
+.error-message {
     color: red;
 }
 </style>
