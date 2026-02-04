@@ -11,6 +11,14 @@ repositories {
     mavenCentral()
 }
 
+bootJar {
+    mainClass = 'org.kob.botrunningsystem.BotRunningSystemApplication'
+}
+
+test {
+    enabled = false
+}
+
 dependencies {
     implementation 'org.mybatis:mybatis-spring:2.0.7'
     implementation 'org.springframework.boot:spring-boot-starter-web'
