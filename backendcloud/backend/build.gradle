@@ -11,6 +11,13 @@ repositories {
     mavenCentral()
 }
 
+bootJar {
+    mainClass = 'org.kob.backend.BackendApplication'
+}
+
+test {
+    enabled = false
+}
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
 

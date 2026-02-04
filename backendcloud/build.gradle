@@ -19,6 +19,13 @@ repositories {
     mavenCentral()
 }
 
+tasks.named('bootJar') {
+    enabled = false
+}
+tasks.named('jar') {
+    enabled = true
+}
+
 
 dependencies {
         implementation platform('org.springframework.boot:spring-boot-dependencies:3.5.10')

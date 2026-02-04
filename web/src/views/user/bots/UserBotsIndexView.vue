@@ -87,7 +87,7 @@
                                                     </div>
                                                     <div class="mb-3">
                                                         <label for="add-bot-code" class="form-label">代码</label>
-                                                        <VAceEditor v-model:value="botadd.content" class = "form-control" @init="editorInit" lang="c_cpp"  
+                                                        <VAceEditor v-model:value="bot.content" class = "form-control" @init="editorInit" lang="c_cpp"  
                                                                     theme="textmate" style="height: 300px" :options="{
                                                                                                                 enableBasicAutocompletion: true, //启用基本自动完成
                                                                                                                 enableSnippets: true, // 启用代码段
@@ -160,7 +160,7 @@ export default {
 
         const refresh_bots = () => {
             $.ajax({
-                url: "http://127.0.0.1:3000/user/bot/getlist/",
+                url: "https://app7811.acapp.acwing.com.cn/api/user/bot/getlist/",
                 type: "GET",
                 headers:{
                     Authorization: "Bearer " + store.state.user.token
@@ -180,7 +180,7 @@ export default {
         const add_bot =() =>{
             botadd.error_message = '';
             $.ajax({
-                url: "http://127.0.0.1:3000/user/bot/add/",
+                url: "https://app7811.acapp.acwing.com.cn/api/user/bot/add/",
                 type: "POST",
                 headers:{
                     Authorization: "Bearer " + store.state.user.token
@@ -206,7 +206,7 @@ export default {
 
         const remove_bot = (bot) => {
             $.ajax({
-                url: "http://127.0.0.1:3000/user/bot/remove/",
+                url: "https://app7811.acapp.acwing.com.cn/api/user/bot/remove/",
                 type: "POST",
                 headers:{
                     Authorization: "Bearer " + store.state.user.token
@@ -225,7 +225,7 @@ export default {
         const update_bot =(bot) =>{
             botadd.error_message = '';
             $.ajax({
-                url: "http://127.0.0.1:3000/user/bot/update/",
+                url: "https://app7811.acapp.acwing.com.cn/api/user/bot/update/",
                 type: "POST",
                 headers:{
                     Authorization: "Bearer " + store.state.user.token

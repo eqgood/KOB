@@ -5,5 +5,4 @@ rootProject.name = 'backendcloud'
 
 include 'matchingsystem'
 include 'backend'
-include 'backend'
-include 'botrunnningsystem'
+include 'botrunningsystem'
