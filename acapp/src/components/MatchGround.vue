@@ -66,11 +66,7 @@ export default{
                 },
                 success(resp){
                     bots.value = resp;
-                    console.log(resp);
                 },
-                error(err){
-                    console.log(err);
-                }
             })
         }
         refresh_bots(); //从云端动态获取bot列表
@@ -110,7 +106,6 @@ export default{
     }
     div.user_photo{
         text-align: center;
-        margin-top: 10vh;
     }
     div.user_photo img{
         border-radius: 50%;

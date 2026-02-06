@@ -63,7 +63,7 @@
                             <tbody>
                                 <tr v-for="bot in bots" :key="bot.id">
                                     <td>{{ bot.title }}</td>
-                                    <td>{{ bot.createtime }}</td>
+                                    <td>{{ bot.createTime }}</td>
                                     <td>
                                         <button  type="button" class="btn btn-secondary" style="margin-right: 10px;" data-bs-toggle="modal" :data-bs-target="'#update-bot-modal-' + bot.id">
                                             修改
