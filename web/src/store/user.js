@@ -65,9 +65,7 @@ export default {
             success(resp){
                 if(resp.message === "success"){
                     context.commit("updateUser", {
-                        id: resp.id,
-                        username: resp.username,
-                        photo: resp.photo,
+                        ...resp,
                         is_login: true
                     });
                     data.success(resp);

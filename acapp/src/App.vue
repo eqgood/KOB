@@ -1,5 +1,4 @@
 <template>
-  <div class="window">
     <div class="game-body">
       <MenuView v-if="$store.state.router.router_name === 'menu'"/>
       <PkIndexView v-else-if = "$store.state.router.router_name === 'pk'"/>
@@ -7,8 +6,7 @@
       <RecordContentView v-else-if="$store.state.router.router_name === 'record_content'"/>
       <RanklistView v-else-if="$store.state.router.router_name === 'ranklist'"/>
       <UserBotsIndexView v-else-if="$store.state.router.router_name === 'user_bots'"/>
-    </div>
-  </div>  
+    </div> 
 </template>
 
 <script>
@@ -19,6 +17,7 @@ import RecordIndexView from './views/record/RecordIndexView.vue';
 import RecordContentView from './views/record/RecordContentView.vue';
 import RanklistView from './views/ranklist/RanklistIndexView.vue';
 import UserBotsIndexView from './views/user/bots/UserBotsIndexView.vue';
+import $ from 'jquery';
 
 export default {
   components: {
@@ -31,10 +30,17 @@ export default {
   },
   setup(){
     const store = useStore();
-    const jwt_token = "eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIzNWYzOGUwNDI0MTQ0Zjk5YjczYmM1OGQ5ZmY0MmNjMiIsInN1YiI6IjEiLCJpc3MiOiJzZyIsImlhdCI6MTc3MDE5OTc3MywiZXhwIjoxNzcxNDA5MzczfQ.embktDl63_x38DUiCcT5gkL_8VNCAMF26Vq_jAoGgiw";
-      if(jwt_token){
-          store.commit("updateToken",jwt_token);
-          store.dispatch("getinfo",{
+
+    $.ajax({
+      url:"https://app7811.acapp.acwing.com.cn/api/user/account/acwing/acapp/apply_code/",
+      type:"get",
+      success(resp){
+        if(resp.result === "success"){
+          store.state.user.AcWingOS.api.oauth2.authorize(resp.appid, resp.redirect_uri, resp.scope, resp.state, resp => {
+            if(resp.result === "success"){
+              const jwt_token = resp.jwt_token;
+              store.commit("updateToken",jwt_token);
+              store.dispatch("getinfo",{
               success(){
                   store.commit("updatePullingInfo", false);
               },
@@ -42,14 +48,21 @@ export default {
                   store.commit("updatePullingInfo", false);
               }
           })
-      }else{
-          store.commit("updatePullingInfo", false);
-    }
+            }else{
+              store.state.user.AcWingOS.api.window.close();
+            }
+          });
+        }else{
+          store.state.user.AcWingOS.api.window.close();
+        }
+      }
+    });
+
   }
 }
 </script>
 
-<style>
+<style scoped>
 body{
   margin: 0;
 }

@@ -52,7 +52,7 @@ div.menu{
     width: 25vw;
     height: 30vh;
     background-color: rgba(50, 50, 50, 0.5);
-}
+} 
 div.menu-item{
     text-align: center;
     width: 100%;

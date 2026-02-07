@@ -50,7 +50,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers(
                                 new AntPathRequestMatcher("/api/user/account/token/"),
-                                new AntPathRequestMatcher("/api/user/account/register/")
+                                new AntPathRequestMatcher("/api/user/account/register/"),
+                                new AntPathRequestMatcher("/api/user/account/acwing/acapp/apply_code/"),
+                                new AntPathRequestMatcher("/api/user/account/acwing/acapp/receive_code/"),
+                                new AntPathRequestMatcher("/api/user/account/acwing/web/apply_code/"),
+                                new AntPathRequestMatcher("/api/user/account/acwing/web/receive_code/")
                         ).permitAll() // 放行api
                         .requestMatchers(
                                 new AntPathRequestMatcher("/pk/start/game/"),
