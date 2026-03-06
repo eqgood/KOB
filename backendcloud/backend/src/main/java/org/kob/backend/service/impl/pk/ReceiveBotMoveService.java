@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 public class ReceiveBotMoveService implements org.kob.backend.service.pk.ReceiveBotMoveService {
     @Override
     public String receiveBotMove(Integer userId, Integer direction) {
-        System.out.println("receive bot move " + userId + " " + direction);
         if(WebSocketServer.users.get(userId) != null){
             Game game = WebSocketServer.users.get(userId).game;
             if(game != null){

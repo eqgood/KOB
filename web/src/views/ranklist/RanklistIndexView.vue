@@ -114,4 +114,7 @@ img.user-photo{
     width: 4vh;
     border-radius: 50%;
 }
+.page-link:focus { 
+  box-shadow: none;
+}
 </style>

@@ -56,7 +56,7 @@ public class GetRecordListServiceImpl implements GetRecordListService {
         }
         queryWrapper.eq("a_id", user.getId()).or().eq("b_id", user.getId());
         resp.put("records", items);
-        resp.put("records_count", recordMapper.selectCount(queryWrapper));
+        resp.put("records_count", recordMapper.selectCount(queryWrapper)); // 找到record表中a_id或b_id等于当前用户id的记录数
         return resp ;
     }
 }

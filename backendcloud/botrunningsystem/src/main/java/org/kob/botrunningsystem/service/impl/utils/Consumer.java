@@ -1,6 +1,5 @@
 package org.kob.botrunningsystem.service.impl.utils;
 
-import lombok.SneakyThrows;
 import org.joor.Reflect;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -31,7 +30,7 @@ public class Consumer extends Thread{
         this.bot = bot;
         this.start();
         try{
-            this.join(timeout); //最多等待 timeout 秒
+            this.join(timeout); //最多等待 timeout 毫秒
         } catch (InterruptedException e) {
             e.printStackTrace();
         }finally{
@@ -63,7 +62,6 @@ public class Consumer extends Thread{
         }
 
         Integer direction = botInterface.get();
-        System.out.println("move direction: " + bot.getUserId() + " " + direction);
 
         MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
         data.add("user_id", bot.getUserId().toString());

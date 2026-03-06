@@ -33,7 +33,7 @@ public class Game extends Thread{
     private Integer nextStepA = null;
     private Integer nextStepB = null;
 
-    private ReentrantLock lock = new ReentrantLock();
+    private final ReentrantLock lock = new ReentrantLock();
 
     private String status = "playing"; // playing => finished
 

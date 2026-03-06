@@ -103,7 +103,7 @@ export default {
                 },
                 success(resp){
                     records.value = resp.records;
-                    total_records = resp.record_count;
+                    total_records = resp.records_count;
 
                     update_pages();
                 },
@@ -115,6 +115,7 @@ export default {
 
         pull_page(current_page);
 
+        // 将map字符串转为二维数组
         const stringTo2D = map => {
             let g = [];
             for (let i = 0, k = 0; i < 13; i ++ ) {
@@ -173,5 +174,8 @@ export default {
 img.record-user-photo{
     width: 4vh;
     border-radius: 50%;
+}
+.page-link:focus { 
+  box-shadow: none;
 }
 </style>

@@ -31,8 +31,7 @@ public class Player {
 
     private boolean check_tail_increasing(int step){ // 检验当前回合是否蛇的长度增加
         if(step <= 10) return true;
-        if(step % 3 == 1) return true;
-        return false;
+        return step % 3 == 1;
     }
 
     public List<Cell> getCells(){

@@ -63,6 +63,7 @@ public class Bot implements java.util.function.Supplier<Integer>{
         for(Cell c: BCells) g[c.x][c.y] = 1;
 
         int[] dx = {-1, 0, 1, 0}, dy = {0, 1, 0, -1};
+        // 判断蛇下一步该向哪个方向移动，只有这一步是判断
         for(int i = 0;i < 4; i ++){
             int x = ACells.get(ACells.size() - 1).x + dx[i];
             int y = ACells.get(ACells.size() - 1).y + dy[i];
