@@ -7,6 +7,7 @@ import org.kob.backend.service.user.account.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,7 +23,7 @@ public class RegisterServiceImpl implements RegisterService {
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public Map<String, String> register(String username, String password, String confirmedPassword) {
+    public Map<String, String> register(String username, String password, String confirmedPassword, String email) {
         Map<String, String> map = new HashMap<>();
         if(username == null){
             map.put("message","用户名不能为空");
@@ -71,10 +72,25 @@ public class RegisterServiceImpl implements RegisterService {
             return map;
         }
 
+        if (!StringUtils.hasText(email)) {
+            map.put("message", "邮箱不能为空");
+            return map;
+        }
+
+        String emailRegex = "^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+        if (!email.matches(emailRegex)) {
+            map.put("message", "邮箱格式不正确");
+            return map;
+        }
+        if(email.length() > 1000){
+            map.put("message", "邮箱长度不能超过1000");
+            return map;
+        }
+
         // 插入用户信息，密码需要加密存储
         String encodedPassword = passwordEncoder.encode(password);
-        String photo = "https://c-ssl.dtstatic.com/uploads/item/202004/14/20200414210134_qbeyi.thumb.400_0.jpg";
-        User user = new User(null, username, encodedPassword ,photo, 1500,null, null);
+        String photo = "https://cdn.acwing.com/media/article/image/2022/07/07/1_d7f3b93efd-kob.png";
+        User user = new User(null, username, encodedPassword ,photo, 1500, null, null, email);
         userMapper.insert(user);
         map.put("message","success");
         return map;

@@ -11,8 +11,17 @@
                         <label for="password" class="form-label">密码</label>
                         <input v-model="password" type="password" class="form-control" id="password" placeholder="请输入密码">
                     </div>
+                    <div class="mb-3 d-flex justify-content-end">
+                        <button 
+                            type="button" 
+                            class="forget-password-btn" 
+                            @click="goToForgetPassword"
+                        >
+                            忘记密码？
+                        </button>
+                    </div>
                     <div v-if="error_message" class="error_message">{{ error_message }}</div>
-                    <button type="submit" class="btn btn-primary">登录</button>
+                    <button type="submit" class="btn btn-primary w-100">登录</button>
                 </form>
                 <div style="text-align: center; margin-top: 20px; cursor: pointer;" @click="acwing_login">
                     <img width="30px" src="https://cdn.acwing.com/media/article/image/2022/09/06/1_32f001fd2d-acwing_logo.png" alt="">
@@ -38,6 +47,10 @@ export default {
         let username = ref('');
         let password = ref('');
         let error_message = ref(''); 
+
+        const goToForgetPassword = () => {
+            router.push({ name: 'user_account_forget_password' });
+        }
 
         const jwt_token = localStorage.getItem("jwt_token");
         if(jwt_token){
@@ -90,17 +103,35 @@ export default {
             password,
             error_message,
             login,
-            acwing_login
+            acwing_login,
+            goToForgetPassword
         };
     }
 }
 </script>
 
 <style scoped>
-button{
-    width: 100%;
-}
 .error_message{
     color: red;
 }
+
+.forget-password-btn {
+    background: none;        
+    border: none;            
+    padding: 0;             
+    margin: 0;               
+    font-size: inherit;      
+    color: #0d6efd;        
+    cursor: pointer;         
+    text-decoration: none;   
+}
+
+.forget-password-btn:hover {
+    color: #0a58ca;          
+    text-decoration: none;   
+    background: none;        
+    border: none;            
+}
+
+
 </style>

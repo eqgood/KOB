@@ -10,6 +10,7 @@ import UserAccountRegisterView from '@/views/user/account/UserAccountRegisterVie
 import store from '@/store/index.js'
 import UserAccountAcWingWebRecieveCodeView from '@/views/user/account/UserAccountAcWingWebRecieveCodeView.vue'
 import UserInfoCenterView from '@/views/user/info/UserInfoCenterView.vue'
+import UserAccountForgetPasswordView from '@/views/user/account/ForgetPasswordView.vue'
 
 const routes = [
   {
@@ -80,6 +81,14 @@ const routes = [
     path: "/user/account/register/",
     name: "user_account_register",
     component: UserAccountRegisterView,
+    meta: {
+      requestAuth: false
+    }
+  },
+  {
+    path: "/user/account/forget_password/",
+    name: "user_account_forget_password",
+    component: UserAccountForgetPasswordView,
     meta: {
       requestAuth: false
     }

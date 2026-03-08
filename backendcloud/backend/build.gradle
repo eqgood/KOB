@@ -21,6 +21,7 @@ test {
 dependencies {
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
 
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     implementation 'com.aliyun.oss:aliyun-sdk-oss:3.16.0'

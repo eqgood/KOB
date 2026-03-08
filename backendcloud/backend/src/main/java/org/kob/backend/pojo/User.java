@@ -17,4 +17,5 @@ public class User {
     private Integer rating;
     private String openid;
     private String description;
+    private String email;
 }

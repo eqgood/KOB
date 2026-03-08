@@ -54,7 +54,9 @@ public class SecurityConfig {
                                 new AntPathRequestMatcher("/api/user/account/acwing/acapp/apply_code/"),
                                 new AntPathRequestMatcher("/api/user/account/acwing/acapp/receive_code/"),
                                 new AntPathRequestMatcher("/api/user/account/acwing/web/apply_code/"),
-                                new AntPathRequestMatcher("/api/user/account/acwing/web/receive_code/")
+                                new AntPathRequestMatcher("/api/user/account/acwing/web/receive_code/"),
+                                new AntPathRequestMatcher("/api/user/account/forget_password/update_password/"),
+                                new AntPathRequestMatcher("/api/user/account/send_verifycode/")
                         ).permitAll() // 放行api
                         .requestMatchers(
                                 new AntPathRequestMatcher("/pk/start/game/"),

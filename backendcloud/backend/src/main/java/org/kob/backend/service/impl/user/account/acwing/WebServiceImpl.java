@@ -113,6 +113,7 @@ public class WebServiceImpl implements WebService {
                 photo,
                 1500,
                 openid,
+                null,
                 null
         );
         userMapper.insert(user);

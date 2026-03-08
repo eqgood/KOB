@@ -67,7 +67,8 @@ public class UpdateInfoServiceImpl  implements UpdateInfoService {
                 user.getPhoto(),
                 user.getRating(),
                 user.getOpenid(),
-                description
+                description,
+                user.getEmail()
         );
         userMapper.updateById(newUser);
         map.put("message", "success");

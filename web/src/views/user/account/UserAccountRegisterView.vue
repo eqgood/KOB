@@ -12,11 +12,24 @@
                         <input v-model="password" type="password" class="form-control" id="password" placeholder="请输入密码">
                     </div>
                     <div class="mb-3">
-                        <label for="confirmedPassword" class="form-label">确认密码</label>
                         <input v-model="confirmedPassword" type="password" class="form-control" id="confirmedPassword" placeholder="请再次输入密码">
                     </div>
+
+                    <div class="mb-3">
+                        <label for="verify--info" class="form-label">验证信息</label>
+                        <input v-model="email" type="text" class="form-control" id="verify--info" placeholder="请输入绑定邮箱">
+                    </div>
+                     <div class="mb-3">
+                        <div class="input-group">
+                            <input v-model="verifyCode" type="text" class="form-control" id="verify-code" placeholder="请输入验证码">
+                            <button type="button" class="btn btn-primary" @click="sendVerifyCode" :disabled="countDown > 0">
+                                {{ countDown > 0 ? `${countDown}s后重新发送` : '发送验证码' }}
+                            </button>
+                        </div>
+                    </div>
+
                     <div v-if="error_message" class="error_message">{{ error_message }}</div>
-                    <button type="submit" class="btn btn-primary">注册</button>
+                    <button type="submit" class="btn btn-primary w-100">注册</button>
                 </form>
             </div>
         </div>
@@ -37,6 +50,8 @@ export default {
         let username = ref("");
         let password = ref("");
         let confirmedPassword = ref("");
+        const email = ref('');
+        const verifyCode = ref('');
         let error_message = ref("");
 
         const register = () =>{
@@ -63,6 +78,8 @@ export default {
             password,
             confirmedPassword,
             error_message,
+            email,
+            verifyCode,
             register
         }
     }
@@ -70,9 +87,6 @@ export default {
 </script>
 
 <style scoped>
-button{
-    width:100%;
-}
 .error_message{
     color:red;
 }
