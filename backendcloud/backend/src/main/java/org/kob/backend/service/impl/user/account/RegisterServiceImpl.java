@@ -73,8 +73,8 @@ public class RegisterServiceImpl implements RegisterService {
 
         // 插入用户信息，密码需要加密存储
         String encodedPassword = passwordEncoder.encode(password);
-        String photo = "https://cdn.acwing.com/media/user/profile/photo/163117_lg_3ed5b29c93.jpg";
-        User user = new User(null, username, encodedPassword ,photo, 1500,null);
+        String photo = "https://c-ssl.dtstatic.com/uploads/item/202004/14/20200414210134_qbeyi.thumb.400_0.jpg";
+        User user = new User(null, username, encodedPassword ,photo, 1500,null, null);
         userMapper.insert(user);
         map.put("message","success");
         return map;

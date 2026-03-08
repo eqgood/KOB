@@ -23,6 +23,10 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    implementation 'com.aliyun.oss:aliyun-sdk-oss:3.16.0'
+
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 
     implementation("com.mysql:mysql-connector-j:9.5.0")
     implementation("com.baomidou:mybatis-plus-boot-starter:3.5.3.1")

@@ -8,10 +8,14 @@ export default {
     token: "",
     is_login: false,
     pulling_info: true, //是否正在拉取用户信息
+    is_update_info: "", //是否更新用户信息成功 ""表示没有更新过，true表示更新成功，false表示更新失败
   },
   getters: {
   },
   mutations: {
+    updateIsUpdateInfo(state, is_update_info){
+        state.is_update_info = is_update_info;
+    },
     updateUser(state, user) {
         state.id = user.id,
         state.username = user.username,

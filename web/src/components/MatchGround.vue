@@ -67,7 +67,6 @@ export default{
                 },
                 success(resp){
                     bots.value = resp;
-                    console.log(resp);
                 },
                 error(err){
                     console.log(err);

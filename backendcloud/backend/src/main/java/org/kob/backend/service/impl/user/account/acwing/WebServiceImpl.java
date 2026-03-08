@@ -112,7 +112,8 @@ public class WebServiceImpl implements WebService {
                 null,
                 photo,
                 1500,
-                openid
+                openid,
+                null
         );
         userMapper.insert(user);
         String jwt = JwtUtil.createJWT(user.getId().toString());

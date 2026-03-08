@@ -45,7 +45,7 @@
                                 <div class="modal-footer">
                                     <div class = "error-message">{{botadd.error_message}}</div>
                                     <button @click="add_bot" type="button" class="btn btn-primary">创建</button>
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @mousedown="(e) => e.currentTarget.blur()">取消</button>
                                 </div>
                                 </div>
                             </div>
@@ -103,7 +103,7 @@
                                                 <div class="modal-footer">
                                                     <div class = "error-message">{{bot.error_message}}</div>
                                                     <button @click="update_bot(bot)" type="button" class="btn btn-primary">保存修改</button>
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">取消</button>
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" @mousedown="(e) => e.currentTarget.blur()">取消</button>
                                                 </div>
                                                 </div>
                                             </div>
@@ -147,10 +147,12 @@ export default {
             require("ace-builds").version +
             "/src-noconflict/")
 
+        const editorInit = () => {};
+
         const botadd = reactive({
             title: '',
             description: '',
-            code: '',
+            content: '',
             error_message: ''
         });
 
@@ -167,7 +169,6 @@ export default {
                 },
                 success(resp){
                     bots.value = resp;
-                    console.log(resp);
                 },
                 error(err){
                     console.log(err);
@@ -195,7 +196,9 @@ export default {
                         botadd.title = '';
                         botadd.description = '';
                         botadd.content = '';
-                        Modal.getInstance("#add-bot-btn").hide();
+                        document.activeElement?.blur();
+                        const el = document.getElementById("add-bot-btn");
+                        Modal.getOrCreateInstance(el).hide();
                         refresh_bots();
                     }else{
                         botadd.error_message = resp.message;
@@ -238,10 +241,13 @@ export default {
                 },
                 success(resp){
                     if(resp.message === "success"){
-                        Modal.getInstance('#update-bot-modal-' + bot.id).hide();
+                        document.activeElement?.blur();
+                        const el = document.getElementById(`update-bot-modal-${bot.id}`);
+                        Modal.getOrCreateInstance(el).hide();
                         refresh_bots();
                     }else{
                         botadd.error_message = resp.message;
+                        bot.error_message = resp.message;
                     }
                 }
             })
@@ -251,7 +257,8 @@ export default {
             botadd,
             add_bot,
             remove_bot,
-            update_bot
+            update_bot,
+            editorInit
         }
     }
 }

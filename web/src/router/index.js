@@ -9,6 +9,7 @@ import UserAccountLoginView from '@/views/user/account/UserAccountLoginView.vue'
 import UserAccountRegisterView from '@/views/user/account/UserAccountRegisterView.vue'
 import store from '@/store/index.js'
 import UserAccountAcWingWebRecieveCodeView from '@/views/user/account/UserAccountAcWingWebRecieveCodeView.vue'
+import UserInfoCenterView from '@/views/user/info/UserInfoCenterView.vue'
 
 const routes = [
   {
@@ -55,6 +56,14 @@ const routes = [
     path: "/user/bots/",
     name: "user_bots_index",
     component: UserBotsIndexView,
+    meta: {
+      requestAuth: true
+    }
+  },
+  {
+    path: "/user/infocenter/",
+    name: "user_info_center",
+    component: UserInfoCenterView,
     meta: {
       requestAuth: true
     }
