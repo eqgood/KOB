@@ -72,8 +72,6 @@ public class UpdatePasswordServiceImpl implements UpdatePasswordService {
             return map;
         }
 
-        stringRedisTemplate.delete(verifyCode);
-
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq("email", email);
         User user = userMapper.selectOne(queryWrapper);
@@ -82,6 +80,8 @@ public class UpdatePasswordServiceImpl implements UpdatePasswordService {
             map.put("message", "邮箱对应的角色不存在");
             return map;
         }
+
+        stringRedisTemplate.delete(redisKey);
 
         String encodedPassword = passwordEncoder.encode(password);
         User updateUser =  new User();

@@ -5,10 +5,12 @@ import org.kob.backend.mapper.UserMapper;
 import org.kob.backend.pojo.User;
 import org.kob.backend.service.user.account.RegisterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import javax.annotation.Resource;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,8 +24,11 @@ public class RegisterServiceImpl implements RegisterService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    @Resource
+    private StringRedisTemplate stringRedisTemplate;
+
     @Override
-    public Map<String, String> register(String username, String password, String confirmedPassword, String email) {
+    public Map<String, String> register(String username, String password, String confirmedPassword, String email, String verifyCode) {
         Map<String, String> map = new HashMap<>();
         if(username == null){
             map.put("message","用户名不能为空");
@@ -86,6 +91,14 @@ public class RegisterServiceImpl implements RegisterService {
             map.put("message", "邮箱长度不能超过1000");
             return map;
         }
+
+        String redisKey = "verify_code:" + email;
+        String redisVerifyCode = stringRedisTemplate.opsForValue().get(redisKey);
+        if (redisVerifyCode == null || !redisVerifyCode.equals(verifyCode)) {
+            map.put("message", "验证码错误或者已经过期");
+            return map;
+        }
+        stringRedisTemplate.delete(redisKey);
 
         // 插入用户信息，密码需要加密存储
         String encodedPassword = passwordEncoder.encode(password);

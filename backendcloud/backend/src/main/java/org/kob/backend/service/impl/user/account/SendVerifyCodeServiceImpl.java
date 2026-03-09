@@ -69,9 +69,16 @@ public class SendVerifyCodeServiceImpl implements SendVerifyCodeService {
             SimpleMailMessage mailMessage = new SimpleMailMessage();
             mailMessage.setFrom(fromEmail); // 发件人
             mailMessage.setTo(email); // 收件人
-            mailMessage.setSubject("密码重置验证码"); // 邮件标题
-            mailMessage.setText("您好，您的密码重置验证码是：" + verifyCode +
-                    "\n验证码有效期5分钟，请及时使用，请勿泄露给他人！");
+            if("forget_password".equals(scene)){
+                mailMessage.setSubject("密码重置验证码"); // 邮件标题
+                mailMessage.setText("您好，您的密码重置验证码是：" + verifyCode +
+                        "\n验证码有效期5分钟，请及时使用，请勿泄露给他人！");
+            }else if("register".equals(scene)) {
+                mailMessage.setSubject("注册验证码"); // 邮件标题
+                mailMessage.setText("您好，您的注册验证码是：" + verifyCode +
+                        "\n验证码有效期5分钟，请及时使用，请勿泄露给他人！");
+            }
+
             // 发送邮件
             javaMailSender.send(mailMessage);
 

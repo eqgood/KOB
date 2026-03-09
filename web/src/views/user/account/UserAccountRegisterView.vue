@@ -53,6 +53,7 @@ export default {
         const email = ref('');
         const verifyCode = ref('');
         let error_message = ref("");
+        const countDown = ref(0);
 
         const register = () =>{
             $.ajax({
@@ -62,6 +63,8 @@ export default {
                     username: username.value,
                     password: password.value,
                     confirmedPassword: confirmedPassword.value,
+                    email:email.value,
+                    verifyCode:verifyCode.value
                 },
                 success(resp){
                     if(resp.message === "success"){
@@ -73,6 +76,53 @@ export default {
             })
         }
 
+        const validateEmail = (emailStr) => {
+            const emailReg = /^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/
+            return emailReg.test(emailStr)
+        }
+
+        const sendVerifyCode = () => { 
+            error_message.value = ''
+
+            if (!email.value.trim()) {
+                error_message.value = '请输入绑定的邮箱';
+                return;
+            }
+            if (!validateEmail(email.value)) {
+                error_message.value = '请输入正确的邮箱格式';
+                return;
+            }
+
+            $.ajax({
+                url: 'https://app7811.acapp.acwing.com.cn/api/user/account/send_verifycode/',
+                type: 'POST',
+                data: {
+                    email: email.value,
+                    scene: 'register'
+                },
+                success(resp) {
+                    if (resp.message === 'success') {
+                        error_message.value = '验证码发送成功，请查收邮件';
+                        // 启动60秒倒计时
+                        countDown.value = 60;
+                        let timer = setInterval(() => {
+                            countDown.value--;
+                            // 倒计时结束清除定时器
+                            if (countDown.value <= 0) {
+                                clearInterval(timer);
+                                timer = null;
+                            }
+                        }, 1000);
+                    } else {
+                        error_message.value = resp.message;
+                    }
+                },
+                error() {
+                    error_message.value = '网络异常，请稍后重试';
+                }
+            })
+        }
+
         return{
             username,
             password,
@@ -80,7 +130,9 @@ export default {
             error_message,
             email,
             verifyCode,
-            register
+            register,
+            sendVerifyCode,
+            countDown
         }
     }
 }
