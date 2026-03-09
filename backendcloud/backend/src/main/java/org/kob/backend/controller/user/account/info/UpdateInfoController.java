@@ -17,6 +17,7 @@ public class UpdateInfoController {
     public Map<String, String> updateInfo(@RequestParam Map<String, String> data) {
         String username = data.get("username");
         String description = data.get("description");
-        return updateInfoService.updateInfo(username, description);
+        String email = data.get("email");
+        return updateInfoService.updateInfo(username, description, email);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,7 +21,7 @@ public class UpdateInfoServiceImpl  implements UpdateInfoService {
     @Autowired
     private UserMapper userMapper;
     @Override
-    public Map<String, String> updateInfo(String username, String description) {
+    public Map<String, String> updateInfo(String username, String description, String email) {
         System.out.println("update info: " + username + " " + description);
         UsernamePasswordAuthenticationToken authenticationToken =
                 (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
@@ -50,7 +51,31 @@ public class UpdateInfoServiceImpl  implements UpdateInfoService {
             return map;
         }
 
+        if (!StringUtils.hasText(email)) {
+            map.put("message", "邮箱不能为空");
+            return map;
+        }
+
+        String emailRegex = "^[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$";
+        if (!email.matches(emailRegex)) {
+            map.put("message", "邮箱格式不正确");
+            return map;
+        }
+        if(email.length() > 1000){
+            map.put("message", "邮箱长度不能超过1000");
+            return map;
+        }
+
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("email", email);
+        User user1 = userMapper.selectOne(queryWrapper);
+        if(user1 != null){
+            map.put("message", "邮箱已被其他用户注册");
+            return map;
+        }
+
+        queryWrapper.clear();
+
         queryWrapper.eq("username", username);
         List<User> users = new ArrayList<>();
         users = userMapper.selectList(queryWrapper);
@@ -68,7 +93,7 @@ public class UpdateInfoServiceImpl  implements UpdateInfoService {
                 user.getRating(),
                 user.getOpenid(),
                 description,
-                user.getEmail()
+                email
         );
         userMapper.updateById(newUser);
         map.put("message", "success");

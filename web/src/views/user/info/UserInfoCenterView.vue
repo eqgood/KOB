@@ -30,6 +30,10 @@
                             <input v-model="current_info.username" type="text" class="form-control" >
                         </div>
                         <div class="mb-3" style = "margin-top: 15px;">
+                            <label class="form-label">邮箱</label>
+                            <input v-model="current_info.email" type="text" class="form-control" >
+                        </div>
+                        <div class="mb-3" style = "margin-top: 15px;">
                             <label class="form-label">个人简介:</label>
                             <textarea v-model="current_info.description" class="form-control" style = "height: 200px;"></textarea>
                         </div>
@@ -37,23 +41,23 @@
                         <div class="d-flex flex-column align-items-center" style="margin-top: 20px;">
                             <div class = "error-message">{{ current_info.message }}</div>
                             
-                            <div v-if = "$store.state.user.is_update_info !== false" class="modal fade" id="confirmed_success" aria-hidden="true" tabindex="-1">
+                            <div class="modal fade" id="confirmed_success" aria-hidden="true" tabindex="-1">
                                 <div class="modal-dialog modal-dialog-centered">
                                     <div class="modal-content">
-                                    <div class="modal-header">
-                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                    </div>
-                                    <div class="modal-body" style="text-align: center;font-size: 20px;font-weight: 300;">
-                                        信息更新成功
-                                    </div>
-                                    <div class="modal-footer">
-                                        <button class="btn btn-primary" data-bs-dismiss="modal">确定</button>
-                                    </div>
+                                        <div class="modal-header">
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body" style="text-align: center;font-size: 20px;font-weight: 300;">
+                                            信息更新成功
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary" data-bs-dismiss="modal">确定</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <button type="button" class="btn btn-primary" @click="click_update(current_info)" data-bs-toggle="modal" data-bs-target="#confirmed_success">
+                            <button type="button" class="btn btn-primary" @click="click_update(current_info)">
                                 更新信息
                             </button>
                         </div>
@@ -69,6 +73,7 @@
 import $ from 'jquery';
 import {ref, reactive} from 'vue';
 import {useStore} from 'vuex';
+import { Modal } from 'bootstrap';
 
 export default{
     setup(){
@@ -78,7 +83,8 @@ export default{
             photo: '',
             username: '',
             description: '',
-            message: ''
+            message: '',
+            email:'',
         });
 
         const fileInput = ref(null);
@@ -147,6 +153,7 @@ export default{
                     current_info.photo = resp.photo;
                     current_info.username = resp.username;
                     current_info.description = resp.description;
+                    current_info.email = resp.email;
                 },
                 error(err){
                     console.log(err);
@@ -154,35 +161,32 @@ export default{
             })
         }
         refresh_info();
-        const click_update = (current_info) => {
+        const click_update = () => {
             $.ajax({
                 url: "https://app7811.acapp.acwing.com.cn/api/user/account/updateinfo/",
                 type: "POST",
                 headers: {
-                    Authorization: "Bearer " + store.state.user.token,
+                Authorization: "Bearer " + store.state.user.token,
                 },
                 data: {
-                    username: current_info.username,
-                    description: current_info.description
+                username: current_info.username,
+                description: current_info.description,
+                email: current_info.email,
                 },
-                
                 success(resp) {
-                    if(resp.message === "success"){
-                        store.commit("updateIsUpdateInfo", true);
-                        refresh_info();
-                        store.commit("updateUser", {
-                            id: store.state.user.id,
-                            photo: current_info.photo,
-                            username: current_info.username,
-                            is_login: store.state.user.is_login,
-                        });
-                        
-                    }else{
-                        current_info.message = resp.message;
-                        store.commit("updateIsUpdateInfo", false);
-                    }  
+                if (resp.message === "success") {
+                    current_info.message = ""
+                    // 成功后再弹窗
+                    const el = document.getElementById("confirmed_success")
+                    Modal.getOrCreateInstance(el).show()
+                } else {
+                    // 失败只显示红字，不要动 modal
+                    current_info.message = resp.message
+                }
                 },
-
+                error(resp) {
+                    current_info.message = resp.message
+                }
             })
         }
         return{

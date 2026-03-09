@@ -86,7 +86,7 @@ public class SendVerifyCodeServiceImpl implements SendVerifyCodeService {
             map.put("message", "success");
         } catch (Exception e) {
 
-            map.put("message", "验证码发送失败，请稍后重试");
+            map.put("message", "验证码发送失败或者邮箱无效，请稍后重试");
         }
 
         return map;
