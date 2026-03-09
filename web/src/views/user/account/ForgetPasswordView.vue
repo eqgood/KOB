@@ -39,7 +39,7 @@
                         </div>
                     </div>
                     <div v-if="error_message" class="error_message">{{ error_message }}</div>
-                    <button type="submit" class="btn btn-primary w-100" @click="update_password"data-bs-toggle="modal" data-bs-target="#update_success">确认修改</button>
+                    <button type="submit" class="btn btn-primary w-100" @click="update_password">确认修改</button>
                 </form>
             </div>
         </div>

@@ -57,6 +57,7 @@ import {useStore} from 'vuex'
 
 export default {
   setup() {
+
     const store = useStore();
     const route = useRoute();
     let route_name = computed(() => route.name)
@@ -64,6 +65,7 @@ export default {
     const logout = () => {
       store.dispatch("logout");
     }
+
     return {
       route_name,
       logout
