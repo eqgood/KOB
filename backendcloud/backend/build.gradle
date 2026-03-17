@@ -19,6 +19,11 @@ test {
     enabled = false
 }
 dependencies {
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-openfeign'
+
+
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
 
     implementation 'org.springframework.boot:spring-boot-starter-mail'
@@ -49,7 +54,6 @@ dependencies {
 
 
     testImplementation("org.springframework.boot:spring-boot-starter-test")
-    implementation 'org.springframework.boot:spring-boot-starter-web'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 

@@ -14,47 +14,46 @@ import java.util.UUID;
 import java.util.function.Supplier;
 
 @Component
-public class Consumer extends Thread{
-
+public class Consumer extends Thread {
     private Bot bot;
-
     private static RestTemplate restTemplate;
-
     private final static String receiveBotMoveUrl = "http://127.0.0.1:3000/pk/receive/bot/move/";
 
     @Autowired
-    public void setRestTemplate(RestTemplate restTemplate){
+    public void setRestTemplate(RestTemplate restTemplate) {
         Consumer.restTemplate = restTemplate;
     }
-    public void startTimeout(Long timeout, Bot bot){
+
+    public void startTimeout(long timeout, Bot bot) {
         this.bot = bot;
         this.start();
-        try{
-            this.join(timeout); //最多等待 timeout 毫秒
+
+        try {
+            this.join(timeout);  // 最多等待timeout秒
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }finally{
-            this.interrupt(); // 线程中断
+        } finally {
+            this.interrupt();  // 终端当前线程
         }
     }
 
-    private String addUid(String code, String uid){  // 在 code 中的 Bot 类名后面加上uid
+    private String addUid(String code, String uid) {  // 在code中的Bot类名后添加uid
         int k = code.indexOf(" implements java.util.function.Supplier<Integer>");
-        return code.substring(0, k) + uid + " " + code.substring(k);
+        return code.substring(0, k) + uid + code.substring(k);
     }
 
     @Override
     public void run() {
-
         UUID uuid = UUID.randomUUID();
-        String uid = uuid.toString().substring(0,8);
+        String uid = uuid.toString().substring(0, 8);
+
         Supplier<Integer> botInterface = Reflect.compile(
                 "org.kob.botrunningsystem.utils.Bot" + uid,
                 addUid(bot.getBotCode(), uid)
         ).create().get();
 
         File file = new File("input.txt");
-        try(PrintWriter fout = new PrintWriter(file)){
+        try (PrintWriter fout = new PrintWriter(file)) {
             fout.println(bot.getInput());
             fout.flush();
         } catch (FileNotFoundException e) {
@@ -62,6 +61,7 @@ public class Consumer extends Thread{
         }
 
         Integer direction = botInterface.get();
+        System.out.println("move-direction: " + bot.getUserId() + " " + direction);
 
         MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
         data.add("user_id", bot.getUserId().toString());
@@ -70,3 +70,4 @@ public class Consumer extends Thread{
         restTemplate.postForObject(receiveBotMoveUrl, data, String.class);
     }
 }
+

@@ -1,6 +1,7 @@
 // java
 package org.kob.botrunningsystem.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -13,11 +14,14 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 import org.springframework.security.web.util.matcher.IpAddressMatcher;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
-    IpAddressMatcher hasIpAddress = new IpAddressMatcher("127.0.0.1");
+    @Value("${internal.token}")
+    private String internalToken;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -28,8 +32,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(
                                 new AntPathRequestMatcher("/bot/add/")
-                        ).access((authentication, context) ->
-                                new AuthorizationDecision(hasIpAddress.matches(context.getRequest())))
+                        ).access((authentication, context) -> {
+                            HttpServletRequest req = context.getRequest();
+                            String header = req.getHeader("X-Internal-Token");
+                            return new org.springframework.security.authorization.AuthorizationDecision(internalToken.equals(header));
+                        })
                         .requestMatchers(new AntPathRequestMatcher("/**", HttpMethod.OPTIONS.name())).permitAll()
                         .anyRequest().authenticated());
         return http.build();

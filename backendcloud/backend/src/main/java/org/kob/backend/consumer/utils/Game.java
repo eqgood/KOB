@@ -6,6 +6,8 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.Getter;
 import org.kob.backend.consumer.WebSocketServer;
 import org.kob.backend.pojo.User;
+import org.kob.backend.utils.feign.BotRunningSystemClient;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 
@@ -39,7 +41,7 @@ public class Game extends Thread{
 
     private String loser = null; // A => A输  B => B输 all => 平局
 
-    private final static String addBotUrl = "http://127.0.0.1:3002/bot/add/";
+    private final BotRunningSystemClient botRunningSystemClient;
 
 
     public Game(
@@ -49,7 +51,8 @@ public class Game extends Thread{
             Integer idA,
             Bot botA,
             Integer idB,
-            Bot botB
+            Bot botB,
+            BotRunningSystemClient botRunningSystemClient
     ) {
         this.rows = rows;
         this.cols = cols;
@@ -68,6 +71,7 @@ public class Game extends Thread{
         }
         playerA = new Player(idA, botIdA, botCodeA,rows- 2, 1, new ArrayList<>());
         playerB = new Player(idB, botIdB, botCodeB,1, cols - 2, new ArrayList<>());
+        this.botRunningSystemClient = botRunningSystemClient;
     }
 
     private boolean check_connectivity(int sx, int sy, int tx, int ty){
@@ -157,15 +161,7 @@ public class Game extends Thread{
 
     private void sendBotCode(Player player){
         if(player.getBotId().equals(-1)) return; // 人亲自出马，不需要执行代码
-        MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
-        data.add("user_id", player.getId().toString());
-        data.add("bot_code", player.getBotCode());
-        data.add("input", getInput(player));
-        WebSocketServer.restTemplate.postForObject(
-                addBotUrl,
-                data,
-                String.class
-        );
+        botRunningSystemClient.addBot(player.getId(), player.getBotCode(), getInput(player));
     }
 
     private boolean nextStep(){ // 等待两名玩家的下一步操作

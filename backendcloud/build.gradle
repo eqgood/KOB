@@ -1,38 +1,37 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '2.7.18'
-    id 'io.spring.dependency-management' version '1.1.7'
+    id 'org.springframework.boot' version '2.7.18' apply false
+    id 'io.spring.dependency-management' version '1.1.7' apply false
 }
 
 group = 'org.kob'
 version = '0.0.1-SNAPSHOT'
 description = 'backendcloud'
 
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
+allprojects {
+    repositories {
+        mavenCentral()
     }
 }
 
-repositories {
-    mavenCentral()
-}
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'io.spring.dependency-management'
 
-tasks.named('bootJar') {
-    enabled = false
-}
-tasks.named('jar') {
-    enabled = true
-}
+    java {
+        toolchain {
+            languageVersion = JavaLanguageVersion.of(17)
+        }
+    }
 
+    dependencyManagement {
+        imports {
+            mavenBom "org.springframework.boot:spring-boot-dependencies:2.7.18"
+            mavenBom "org.springframework.cloud:spring-cloud-dependencies:2021.0.8"
+        }
+    }
 
-dependencies {
-        implementation platform('org.springframework.boot:spring-boot-dependencies:3.5.10')
-        implementation platform('org.springframework.cloud:spring-cloud-dependencies:2025.1.0')
-}
-
-
-tasks.named('test') {
-    useJUnitPlatform()
+    tasks.withType(Test).configureEach {
+        useJUnitPlatform()
+    }
 }

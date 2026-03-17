@@ -15,5 +15,11 @@
       "dom.iterable",
       "scripthost"
     ]
-  }
+  },
+  "exclude": [
+    "node_modules",
+    "**/UserBotsIndexView_FIXED.vue",
+    "**/UserBotsIndexView_TEST.vue",
+    "**/modal-test.html"
+  ]
 }

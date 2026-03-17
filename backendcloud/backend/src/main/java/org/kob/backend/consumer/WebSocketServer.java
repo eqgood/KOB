@@ -8,19 +8,16 @@ import org.kob.backend.mapper.RecordMapper;
 import org.kob.backend.mapper.UserMapper;
 import org.kob.backend.pojo.Bot;
 import org.kob.backend.pojo.User;
+import org.kob.backend.utils.feign.BotRunningSystemClient;
+import org.kob.backend.utils.feign.MatchingSystemClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
 @Component
 @ServerEndpoint("/websocket/{token}")  // 注意不要以'/'结尾
@@ -37,14 +34,23 @@ public class WebSocketServer {
 
     private static BotMapper botMapper;
 
-    public static RestTemplate restTemplate;
-
     public Game game = null;
 
-    private final static String addPlayerUrl = "http://127.0.0.1:3001/player/add/";
-    private final static String removePlayerUrl = "http://127.0.0.1:3001/player/remove/";
+
+    private static MatchingSystemClient matchingSystemClient;
 
 
+    private static BotRunningSystemClient botRunningSystemClient;
+
+    @Autowired
+    public void setMatchingSystemClient(MatchingSystemClient matchingSystemClient) {
+        WebSocketServer.matchingSystemClient = matchingSystemClient;
+    }
+
+    @Autowired
+    public void setBotRunningSystemClient(BotRunningSystemClient botRunningSystemClient) {
+        WebSocketServer.botRunningSystemClient = botRunningSystemClient;
+    }
     @Autowired
     public void setUserMapper(UserMapper userMapper) {
         WebSocketServer.userMapper = userMapper;
@@ -58,10 +64,6 @@ public class WebSocketServer {
     @Autowired
     public void setBotMapper(BotMapper botMapper){
         WebSocketServer.botMapper = botMapper;
-    }
-    @Autowired
-    public void setRestTemplate(RestTemplate restTemplate) {
-        WebSocketServer.restTemplate = restTemplate;
     }
 
     @OnOpen
@@ -86,7 +88,14 @@ public class WebSocketServer {
         }
     }
 
-    public static void startGame(Integer aId, Integer aBotId, Integer bId, Integer bBotId){
+    public static void startGame(Integer aId, Integer aBotId, Integer bId, Integer bBotId) {
+        WebSocketServer server = users.get(aId);
+        if (server == null) server = users.get(bId);
+        if (server == null) return; // 双方都不在线，直接返回
+        server.startGameInternal(aId, aBotId, bId, bBotId);
+    }
+
+    public void startGameInternal(Integer aId, Integer aBotId, Integer bId, Integer bBotId){
         User a = userMapper.selectById(aId);
         Bot botA = botMapper.selectById(aBotId);
         User b = userMapper.selectById(bId);
@@ -99,7 +108,8 @@ public class WebSocketServer {
                 a.getId(),
                 botA,
                 b.getId(),
-                botB
+                botB,
+                botRunningSystemClient
         );
         game.createMap();
 
@@ -136,21 +146,21 @@ public class WebSocketServer {
     }
 
     private void startMatching(Integer botId){
-        MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
-        data.add("user_id", this.user.getId().toString());
-        data.add("rating", this.user.getRating().toString());
-        data.add("bot_id", botId.toString());
-        // 向matching-service发起请求
-        restTemplate.postForObject(addPlayerUrl, data, String.class);
-
+        if (matchingSystemClient == null) {
+            System.err.println("matchingSystemClient is null in startMatching, userId=" + (this.user == null ? null : this.user.getId()));
+            return;
+        }
+        matchingSystemClient.addPlayer(this.user.getId(), this.user.getRating(), botId);
     }
 
     private void stopMatching(){
-        MultiValueMap<String, String> data = new LinkedMultiValueMap<>();
-        data.add("user_id", this.user.getId().toString());
-        // 向matching-service发起请求
-        restTemplate.postForObject(removePlayerUrl, data, String.class);
+        if (matchingSystemClient == null) {
+            System.err.println("matchingSystemClient is null in stopMatching, userId=" + (this.user == null ? null : this.user.getId()));
+            return;
+        }
+        matchingSystemClient.removePlayer(this.user.getId());
     }
+
 
     private void move(Integer direction){
         if(game.getPlayerA().getId().equals(user.getId())){
