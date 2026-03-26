@@ -1,6 +1,6 @@
 package org.kob.matchingsystem;
 
-import org.kob.matchingsystem.Service.impl.MatchingServiceImpl;
+import org.kob.matchingsystem.service.impl.MatchingServiceImpl;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;

@@ -27,6 +27,7 @@ public class WebServiceImpl implements WebService {
 
     private static final String appSecret = "947fc740605b46b89a91ca5f1b462092";
 
+    // 回调地址是前端页面的地址
     private static final String redirectUri = "https://app7811.acapp.acwing.com.cn/user/account/acwing/web/receive_code/";
 
     private static final String applyAccessTokenUrl = "https://www.acwing.com/third_party/api/oauth2/access_token/";

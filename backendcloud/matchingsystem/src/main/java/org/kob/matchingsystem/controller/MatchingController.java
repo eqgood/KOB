@@ -1,10 +1,8 @@
-package org.kob.matchingsystem.Controller;
+package org.kob.matchingsystem.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import org.kob.matchingsystem.Service.MatchingService;
+import org.kob.matchingsystem.service.MatchingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.MultiValueMap;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;

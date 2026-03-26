@@ -1,4 +1,4 @@
-package org.kob.matchingsystem.Service.impl.utils;
+package org.kob.matchingsystem.service.impl.utils;
 
 
 import lombok.AllArgsConstructor;

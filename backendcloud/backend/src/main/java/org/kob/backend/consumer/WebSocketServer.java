@@ -66,6 +66,8 @@ public class WebSocketServer {
         WebSocketServer.botMapper = botMapper;
     }
 
+
+
     @OnOpen
     public void onOpen(Session session, @PathParam("token") String token) throws IOException {
 
@@ -146,18 +148,10 @@ public class WebSocketServer {
     }
 
     private void startMatching(Integer botId){
-        if (matchingSystemClient == null) {
-            System.err.println("matchingSystemClient is null in startMatching, userId=" + (this.user == null ? null : this.user.getId()));
-            return;
-        }
         matchingSystemClient.addPlayer(this.user.getId(), this.user.getRating(), botId);
     }
 
     private void stopMatching(){
-        if (matchingSystemClient == null) {
-            System.err.println("matchingSystemClient is null in stopMatching, userId=" + (this.user == null ? null : this.user.getId()));
-            return;
-        }
         matchingSystemClient.removePlayer(this.user.getId());
     }
 
