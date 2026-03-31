@@ -4,7 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "matchingsystem")
+@FeignClient(name = "matchingsystem", fallbackFactory = MatchingSystemClientFallbackFactory.class)
 public interface MatchingSystemClient {
 
     @PostMapping("/player/add/")

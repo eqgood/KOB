@@ -7,9 +7,6 @@ import lombok.Getter;
 import org.kob.backend.consumer.WebSocketServer;
 import org.kob.backend.pojo.User;
 import org.kob.backend.utils.feign.BotRunningSystemClient;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 
 import java.util.ArrayList;
 import java.util.Date;

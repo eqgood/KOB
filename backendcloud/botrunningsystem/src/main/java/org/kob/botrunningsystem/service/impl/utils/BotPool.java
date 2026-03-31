@@ -22,7 +22,7 @@ public class BotPool extends Thread {
 
     private void consume(Bot bot) {
         Consumer consumer = new Consumer();
-        consumer.startTimeout(2000, bot);
+        consumer.executeBot(bot);
     }
 
     @Override

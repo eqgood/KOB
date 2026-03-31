@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class Bot implements java.util.function.Supplier<Integer>{
+public class BotTest implements java.util.function.Supplier<Integer>{
 
     static class Cell{
         public int x, y;
